@@ -1,14 +1,14 @@
-{ 
-  "name": "cdk-managed-ad",
-  "image": "ghcr.io/devcontainers/templates/typescript-node:latest",
-  "features": {
-    "ghcr.io/devcontainers/features/aws-cli:latest": {},
-    "ghcr.io/devcontainers-extra/features/aws-cdk:latest": {},
-    "ghcr.io/devcontainers/features/github-cli:latest": {},
-    "ghcr.io/mikaello/devcontainer-features/modern-shell-utils:latest": {}
-  },
+{
+	"name": "cdk-managed-ad",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:latest",
+	"features": {
+		"ghcr.io/devcontainers/features/aws-cli:latest": {},
+		"ghcr.io/devcontainers-extra/features/aws-cdk:latest": {},
+		"ghcr.io/devcontainers/features/github-cli:latest": {},
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:latest": {}
+	},
 	// Mount the host's ~/.aws folder into the container.
-  // This may be overridden in a Codespace by a dotfile repo.
+	// This may be overridden in a Codespace by a dotfile repo.
 	"mounts": [
 		"source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind"
 	],
@@ -24,8 +24,9 @@
 				"aws.telemetry": false
 			},
 			"extensions": [
-				"AmazonWebServices.aws-toolkit-vscode"
+				"AmazonWebServices.aws-toolkit-vscode",
+				"AmazonWebServices.amazon-q-vscode"
 			]
 		}
-	}  
+	}
 }
