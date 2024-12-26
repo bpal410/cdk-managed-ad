@@ -18,7 +18,7 @@ export interface MicrosoftADProps {
   /**
    * The password for the directory administrator.
    * If not provided, a secure random password will be generated.
-   * 
+   *
    * @default - A secure random password is generated
    */
   readonly password?: Secret;
@@ -53,7 +53,7 @@ export class MicrosoftAD extends Construct {
   /**
    * The underlying CfnMicrosoftAD resource
    */
-  public readonly microsoftAD: CfnMicrosoftAD;
+  public readonly directory: CfnMicrosoftAD;
 
   /**
    * The ID of the directory
@@ -84,11 +84,11 @@ export class MicrosoftAD extends Construct {
     const adSecret = props.password ?? new Secret(this, 'AdSecret', {
       generateSecretString: {
         passwordLength: 32,
-        excludePunctuation: true
-      }
+        excludePunctuation: true,
+      },
     });
 
-    this.microsoftAD = new CfnMicrosoftAD(this, 'Resource', {
+    this.directory = new CfnMicrosoftAD(this, 'Resource', {
       name: props.domainName,
       password: adSecret.secretValue.unsafeUnwrap(),
       vpcSettings: {
@@ -100,8 +100,8 @@ export class MicrosoftAD extends Construct {
     });
 
 
-    this.directoryId = this.microsoftAD.ref;
-    this.dnsIps = this.microsoftAD.attrDnsIpAddresses;
+    this.directoryId = this.directory.ref;
+    this.dnsIps = this.directory.attrDnsIpAddresses;
     this.secretArn = adSecret.secretArn;
   }
 }

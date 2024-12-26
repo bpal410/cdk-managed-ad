@@ -2,7 +2,7 @@ import { awscdk } from 'projen';
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'bpal410',
   authorAddress: '46696804+bpal410@users.noreply.github.com',
-  cdkVersion: '2.1.0',
+  cdkVersion: '2.173.2',
   defaultReleaseBranch: 'main',
   jsiiVersion: '~5.7.0',
   name: 'cdk-managed-ad',

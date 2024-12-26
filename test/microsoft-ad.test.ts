@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { Match, Template } from 'aws-cdk-lib/assertions';
+import { Template } from 'aws-cdk-lib/assertions'; // Removed `Match`
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import { MicrosoftAD } from '../lib/microsoft-ad';
 
