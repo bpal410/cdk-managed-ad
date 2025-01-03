@@ -4,14 +4,12 @@ const project = new awscdk.AwsCdkConstructLibrary({
   authorAddress: '46696804+bpal410@users.noreply.github.com',
   cdkVersion: '2.173.2',
   defaultReleaseBranch: 'main',
-  jsiiVersion: '~5.7.0',
-  name: 'cdk-managed-ad',
   projenrcTs: true,
+  name: 'cdk-managed-ad',
+  description: 'AWS CDK constructs for Directory Service Managed AD',
   repositoryUrl: 'https://github.com/bpal410/cdk-managed-ad.git',
-
+  keywords: ['awscdk', 'directoryservice'],
   // deps: [],                /* Runtime dependencies of this module. */
-  // description: undefined,  /* The description is just a string that helps people understand the purpose of the package. */
   // devDeps: [],             /* Build dependencies for this module. */
-  // packageName: undefined,  /* The "name" in package.json. */
 });
 project.synth();
