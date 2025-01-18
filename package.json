@@ -64,9 +64,11 @@
     "constructs": "^10.0.5"
   },
   "keywords": [
+    "activedirectory",
     "awscdk",
     "cdk",
-    "directoryservice"
+    "directoryservice",
+    "managedad"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
@@ -125,8 +127,8 @@
     "outdir": "dist",
     "targets": {
       "python": {
-        "distName": "bpal410.cdk-managed-ad",
-        "module": "bpal410.cdk_managed_ad"
+        "distName": "cdk-managed-ad",
+        "module": "cdk_managed_ad"
       }
     },
     "tsc": {
