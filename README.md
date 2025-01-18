@@ -1,40 +1,6 @@
 # cdk-managed-ad
 
-This is a level 2 cdk construct library forked from the repo for *DOP215 - Next-generation CDK development with Amazon Q Developer* from AWS reInvent 2024.
-
-## Prerequisities
-
-Prepare your markdown documents under `doc/`. Make sure to add the alias names on the top of each document.
-
-install the latest npm packages
-
-```bash
-yarn install
-yarn upgrade --latest
-```
-
-check your cdk version
-
-```bash
-npx cdk --version
-```
-
-## Prompts for Amazon Q Developer
-
-Generaet the constructs:
-
-```
-@workspace follow DESIGNGUIDELINES and MYPATTERNS, build a directoryservice.MicrosoftAD for me as a L2 construct for directoryservice.CfnMicrosoftAD.
-```
-
-Generate the README and tests:
-
-```
-/dev update the README.md and generate unit tests for the MicrosoftAD construct class.
-```
-
-Make sure to adjust the prompts for your own generation purposes.
-
+This is a level 2ish/3 cdk construct library for 
 
 ## Usage
 
@@ -63,6 +29,7 @@ const ad = new MicrosoftAD(stack, 'CorporateAD', {
   vpc: vpc,
   edition: 'Standard', // or 'Enterprise'
   shortName: 'CORP', // optional. This would be your NetBIOS name.
+  enableDirectoryDataAccess: true, // optional, . Enables Directory Service Data Access
 });
 
 // The directory ID and DNS IPs are available as properties
@@ -79,6 +46,7 @@ console.log('Admin Password Secret ARN:', ad.secretArn);
 - `edition` (optional): Edition of Microsoft AD ('Standard' or 'Enterprise', defaults to 'Standard')
 - `shortName` (optional): Short name for the directory (e.g., CORP)
 - `vpcSubnets` (optional): Specific subnet selection for the AD (defaults to two subnets from different AZs)
+- `enableDirectoryDataAccess` (optional) - Deploy custom resource to enable the Directory Service Data API. Default is false. To use this you must add `"@aws-cdk/customresources:installLatestAwsSdkDefault": true` context to your `cdk.json`.
 
 ## Security
 

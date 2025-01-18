@@ -781,11 +781,275 @@
                   "fqn": "aws-cdk-lib.aws_directoryservice.CfnMicrosoftAD",
                   "version": "2.173.2"
                 }
+              },
+              "EnableDataAccessRole": {
+                "id": "EnableDataAccessRole",
+                "path": "Default/MicrosoftADStack/EnableDataAccessRole",
+                "children": {
+                  "ImportEnableDataAccessRole": {
+                    "id": "ImportEnableDataAccessRole",
+                    "path": "Default/MicrosoftADStack/EnableDataAccessRole/ImportEnableDataAccessRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Default/MicrosoftADStack/EnableDataAccessRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "Default/MicrosoftADStack/EnableDataAccessRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Default/MicrosoftADStack/EnableDataAccessRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "ds:DisableDirectoryDataAccess",
+                                    "ds:EnableDirectoryDataAccess"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:ds:",
+                                        {
+                                          "Ref": "AWS::Region"
+                                        },
+                                        ":",
+                                        {
+                                          "Ref": "AWS::AccountId"
+                                        },
+                                        ":directory/*"
+                                      ]
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "MicrosoftADStackEnableDataAccessRoleDefaultPolicy46999ECC",
+                            "roles": [
+                              {
+                                "Ref": "MicrosoftADStackEnableDataAccessRoleF5BD4651"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.173.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.173.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.173.2"
+                }
+              },
+              "EnableDirectoryDataAccess": {
+                "id": "EnableDirectoryDataAccess",
+                "path": "Default/MicrosoftADStack/EnableDirectoryDataAccess",
+                "children": {
+                  "Provider": {
+                    "id": "Provider",
+                    "path": "Default/MicrosoftADStack/EnableDirectoryDataAccess/Provider",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.SingletonFunction",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Default/MicrosoftADStack/EnableDirectoryDataAccess/Resource",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "Default/MicrosoftADStack/EnableDirectoryDataAccess/Resource/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.173.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CustomResource",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "CustomResourcePolicy": {
+                    "id": "CustomResourcePolicy",
+                    "path": "Default/MicrosoftADStack/EnableDirectoryDataAccess/CustomResourcePolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Default/MicrosoftADStack/EnableDirectoryDataAccess/CustomResourcePolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "ds:DisableDirectoryDataAccess",
+                                    "ds:EnableDirectoryDataAccess"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "MicrosoftADStackEnableDirectoryDataAccessCustomResourcePolicy24EAB48F",
+                            "roles": [
+                              {
+                                "Ref": "MicrosoftADStackEnableDataAccessRoleF5BD4651"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.173.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.173.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.custom_resources.AwsCustomResource",
+                  "version": "2.173.2"
+                }
               }
             },
             "constructInfo": {
-              "fqn": "constructs.Construct",
-              "version": "10.4.2"
+              "fqn": "cdk-managed-ad.MicrosoftAD",
+              "version": "0.0.0"
+            }
+          },
+          "AWS679f53fac002430cb0da5b7982bd2287": {
+            "id": "AWS679f53fac002430cb0da5b7982bd2287",
+            "path": "Default/AWS679f53fac002430cb0da5b7982bd2287",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "Default/AWS679f53fac002430cb0da5b7982bd2287/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "Default/AWS679f53fac002430cb0da5b7982bd2287/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "Default/AWS679f53fac002430cb0da5b7982bd2287/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.173.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.173.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "Default/AWS679f53fac002430cb0da5b7982bd2287/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "ce2f3595a340d6c519a65888ef97e3b9b64f053f83608e32cc28162e22d7d99a.zip"
+                    },
+                    "handler": "index.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "MicrosoftADStackEnableDataAccessRoleF5BD4651",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": {
+                      "Fn::FindInMap": [
+                        "LatestNodeRuntimeMap",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "value"
+                      ]
+                    },
+                    "timeout": 120
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.173.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.173.2"
             }
           },
           "CDKMetadata": {
@@ -811,7 +1075,7 @@
             },
             "constructInfo": {
               "fqn": "constructs.Construct",
-              "version": "10.4.2"
+              "version": "10.0.5"
             }
           },
           "BootstrapVersion": {
@@ -841,7 +1105,7 @@
         "path": "Tree",
         "constructInfo": {
           "fqn": "constructs.Construct",
-          "version": "10.4.2"
+          "version": "10.0.5"
         }
       }
     },

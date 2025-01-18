@@ -25,7 +25,8 @@
 			},
 			"extensions": [
 				"AmazonWebServices.aws-toolkit-vscode",
-				"AmazonWebServices.amazon-q-vscode"
+				"AmazonWebServices.amazon-q-vscode",
+				"GitHub.vscode-github-actions"
 			]
 		}
 	}

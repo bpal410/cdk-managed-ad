@@ -1,6 +1,9 @@
+import { Stack } from 'aws-cdk-lib';
 import { CfnMicrosoftAD } from 'aws-cdk-lib/aws-directoryservice';
 import { IVpc, SubnetSelection } from 'aws-cdk-lib/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager';
+import * as cr from 'aws-cdk-lib/custom-resources';
 import { Construct } from 'constructs';
 
 /**
@@ -44,6 +47,12 @@ export interface MicrosoftADProps {
    * @default - Two subnets will be selected from different AZs
    */
   readonly vpcSubnets?: SubnetSelection;
+
+  /**
+   * Enable Directory Data Service Access
+   * @default false
+   */
+  readonly enableDirectoryDataAccess?: boolean;
 }
 
 /**
@@ -103,5 +112,45 @@ export class MicrosoftAD extends Construct {
     this.directoryId = this.directory.ref;
     this.dnsIps = this.directory.attrDnsIpAddresses;
     this.secretArn = adSecret.secretArn;
+
+    if ( props.enableDirectoryDataAccess ) {
+    // Create IAM role for the Custom Resource
+      const enableDataAccessRole = new iam.Role(this, 'EnableDataAccessRole', {
+        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        managedPolicies: [
+          iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+        ],
+      });
+
+      // Add required permissions for Directory Service
+      enableDataAccessRole.addToPolicy(new iam.PolicyStatement({
+        actions: ['ds:EnableDirectoryDataAccess', 'ds:DisableDirectoryDataAccess'],
+        resources: [`arn:aws:ds:${Stack.of(this).region}:${Stack.of(this).account}:directory/*`],
+      }));
+
+      // Create the Custom Resource
+      new cr.AwsCustomResource(this, 'EnableDirectoryDataAccess', {
+        onCreate: {
+          service: 'DirectoryService',
+          action: 'enableDirectoryDataAccess',
+          parameters: {
+            DirectoryId: this.directory.ref,
+          },
+          physicalResourceId: cr.PhysicalResourceId.of(`${this.directory.ref}-data-access`),
+        },
+        onDelete: {
+          service: 'DirectoryService',
+          action: 'disableDirectoryDataAccess',
+          parameters: {
+            DirectoryId: this.directory.ref,
+          },
+          physicalResourceId: cr.PhysicalResourceId.of(`${this.directory.ref}-data-access`),
+        },
+        policy: cr.AwsCustomResourcePolicy.fromSdkCalls({
+          resources: cr.AwsCustomResourcePolicy.ANY_RESOURCE,
+        }),
+        role: enableDataAccessRole,
+      });
+    }
   }
 }

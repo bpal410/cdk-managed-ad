@@ -176,6 +176,7 @@ const microsoftADProps: MicrosoftADProps = { ... }
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.domainName">domainName</a></code> | <code>string</code> | The fully qualified domain name for the AD directory (e.g. corp.example.com). |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.vpc">vpc</a></code> | <code>aws-cdk-lib.aws_ec2.IVpc</code> | VPC where the Microsoft AD will be created. |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.edition">edition</a></code> | <code>string</code> | Edition of Microsoft AD (Standard or Enterprise). |
+| <code><a href="#cdk-managed-ad.MicrosoftADProps.property.enableDirectoryDataAccess">enableDirectoryDataAccess</a></code> | <code>boolean</code> | Enable Directory Data Service Access. |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.password">password</a></code> | <code>aws-cdk-lib.aws_secretsmanager.Secret</code> | The password for the directory administrator. |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.shortName">shortName</a></code> | <code>string</code> | Short name for the directory (e.g. CORP). |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | *No description.* |
@@ -216,6 +217,19 @@ public readonly edition: string;
 - *Default:* Standard
 
 Edition of Microsoft AD (Standard or Enterprise).
+
+---
+
+##### `enableDirectoryDataAccess`<sup>Optional</sup> <a name="enableDirectoryDataAccess" id="cdk-managed-ad.MicrosoftADProps.property.enableDirectoryDataAccess"></a>
+
+```typescript
+public readonly enableDirectoryDataAccess: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Enable Directory Data Service Access.
 
 ---
 

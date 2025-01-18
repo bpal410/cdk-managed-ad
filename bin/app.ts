@@ -30,7 +30,8 @@ new MicrosoftAD(stack, 'MicrosoftADStack', {
     vpc: vpc,
     vpcSubnets: vpc.selectSubnets({
         subnetType: cdk.aws_ec2.SubnetType.PRIVATE_WITH_EGRESS
-    })
+    }),
+    enableDirectoryDataAccess: true
 });
 
 app.synth();
