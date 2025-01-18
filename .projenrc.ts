@@ -16,5 +16,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
   // deps: [],                /* Runtime dependencies of this module. */
   // devDeps: [],             /* Build dependencies for this module. */
 });
+
 project
 project.synth();
