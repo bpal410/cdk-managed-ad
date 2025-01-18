@@ -12,10 +12,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   publishToPypi: {
     distName: 'bpal410.cdk-managed-ad',
     module: 'bpal410.cdk_managed_ad',
-  }
-  // deps: [],                /* Runtime dependencies of this module. */
-  // devDeps: [],             /* Build dependencies for this module. */
+  },
 });
 
-project
 project.synth();
