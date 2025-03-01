@@ -5,7 +5,10 @@
 		"ghcr.io/devcontainers/features/aws-cli:latest": {},
 		"ghcr.io/devcontainers-extra/features/aws-cdk:latest": {},
 		"ghcr.io/devcontainers/features/github-cli:latest": {},
-		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:latest": {}
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:latest": {},
+		"ghcr.io/devcontainers/features/python:latest": {
+			"version": "3.13"
+		}
 	},
 	// Mount the host's ~/.aws folder into the container.
 	// This may be overridden in a Codespace by a dotfile repo.
