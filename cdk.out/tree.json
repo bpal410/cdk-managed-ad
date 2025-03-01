@@ -863,7 +863,10 @@
                                         {
                                           "Ref": "AWS::AccountId"
                                         },
-                                        ":directory/*"
+                                        ":directory/",
+                                        {
+                                          "Ref": "MicrosoftADStack915700F2"
+                                        }
                                       ]
                                     ]
                                   }
@@ -976,8 +979,8 @@
               }
             },
             "constructInfo": {
-              "fqn": "cdk-managed-ad.MicrosoftAD",
-              "version": "0.0.0"
+              "fqn": "constructs.Construct",
+              "version": "10.0.5"
             }
           },
           "AWS679f53fac002430cb0da5b7982bd2287": {
@@ -1023,6 +1026,7 @@
                       "s3Key": "ce2f3595a340d6c519a65888ef97e3b9b64f053f83608e32cc28162e22d7d99a.zip"
                     },
                     "handler": "index.handler",
+                    "memorySize": 512,
                     "role": {
                       "Fn::GetAtt": [
                         "MicrosoftADStackEnableDataAccessRoleF5BD4651",
