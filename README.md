@@ -1,6 +1,6 @@
 # cdk-managed-ad
 
-This is a level 2ish/3 cdk construct library for 
+This is a level 2ish/3ish cdk construct library for deployment and management of a AWS Managed Microsoft AD.
 
 ## Usage
 
@@ -10,7 +10,7 @@ The `MicrosoftAD` construct creates an AWS Managed Microsoft AD directory in you
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as sm from 'aws-cdk-lib/aws-secretsmanager';
-import { MicrosoftAD } from './microsoft-ad';
+import { MicrosoftAD } from 'cdk-managed-ad';
 
 const stack = new cdk.Stack();
 
@@ -46,7 +46,7 @@ console.log('Admin Password Secret ARN:', ad.secretArn);
 - `edition` (optional): Edition of Microsoft AD ('Standard' or 'Enterprise', defaults to 'Standard')
 - `shortName` (optional): Short name for the directory (e.g., CORP)
 - `vpcSubnets` (optional): Specific subnet selection for the AD (defaults to two subnets from different AZs)
-- `enableDirectoryDataAccess` (optional) - Deploy custom resource to enable the Directory Service Data API. Default is false. To use this you must add `"@aws-cdk/customresources:installLatestAwsSdkDefault": true` context to your `cdk.json`.
+- `enableDirectoryDataAccess` (optional) - Deploy custom resource to enable the Directory Service Data API. Default is false.
 
 ## Security
 
