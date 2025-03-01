@@ -125,11 +125,12 @@ export class MicrosoftAD extends Construct {
       // Add required permissions for Directory Service
       enableDataAccessRole.addToPolicy(new iam.PolicyStatement({
         actions: ['ds:EnableDirectoryDataAccess', 'ds:DisableDirectoryDataAccess'],
-        resources: [`arn:aws:ds:${Stack.of(this).region}:${Stack.of(this).account}:directory/*`],
+        resources: [`arn:aws:ds:${Stack.of(this).region}:${Stack.of(this).account}:directory/${this.directoryId}`],
       }));
 
       // Create the Custom Resource
       new cr.AwsCustomResource(this, 'EnableDirectoryDataAccess', {
+        installLatestAwsSdk: true,
         onCreate: {
           service: 'DirectoryService',
           action: 'enableDirectoryDataAccess',
