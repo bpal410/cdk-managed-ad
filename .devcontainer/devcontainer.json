@@ -10,12 +10,13 @@
 	// Mount the host's ~/.aws folder into the container.
 	// This may be overridden in a Codespace by a dotfile repo.
 	"mounts": [
-		"source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind"
+		"source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/node/.aws,type=bind"
 	],
-	// Set Envs. The chosen AWS_DEFAULT_PROFILE should be found in the above mount/repo
+	// Set Envs. The chosen AWS_PROFILE should be found in the above mount/repo
 	"remoteEnv": {
 		"AWS_PROFILE": "dev"
 	},
+	"postCreateCommand": ".devcontainer/postCreateCommand.sh",
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
