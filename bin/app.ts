@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { MicrosoftAD } from '../src/microsoft-ad';
+import { MicrosoftAD } from '../lib/microsoft-ad';
 
 const app = new cdk.App();
 
