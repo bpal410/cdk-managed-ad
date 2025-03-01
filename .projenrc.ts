@@ -14,5 +14,4 @@ const project = new awscdk.AwsCdkConstructLibrary({
     module: 'cdk_managed_ad',
   },
 });
-
 project.synth();
