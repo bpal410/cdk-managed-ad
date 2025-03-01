@@ -8,7 +8,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   name: 'cdk-managed-ad',
   description: 'AWS CDK constructs for Directory Service Managed AD',
   repositoryUrl: 'https://github.com/bpal410/cdk-managed-ad.git',
-  keywords: ['awscdk', 'directoryservice', 'activedirectory', 'managedad'],
+  keywords: ['awscdk', 'directoryservice', 'activedirectory'],
   publishToPypi: {
     distName: 'cdk-managed-ad',
     module: 'cdk_managed_ad',

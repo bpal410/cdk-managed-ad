@@ -5,6 +5,9 @@
     "type": "git",
     "url": "https://github.com/bpal410/cdk-managed-ad.git"
   },
+  "bin": {
+    "app.ts": "bin/app.ts"
+  },
   "scripts": {
     "build": "npx projen build",
     "bump": "npx projen bump",
@@ -67,8 +70,7 @@
     "activedirectory",
     "awscdk",
     "cdk",
-    "directoryservice",
-    "managedad"
+    "directoryservice"
   ],
   "main": "lib/index.js",
   "license": "Apache-2.0",
