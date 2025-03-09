@@ -73,4 +73,6 @@ describe('MicrosoftAD', () => {
       });
     }).toThrow('VPC must have at least 2 subnets in different AZs for Microsoft AD');
   });
+
+  // TODO: Enforce private subnets only
 });

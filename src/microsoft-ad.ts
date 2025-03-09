@@ -53,6 +53,12 @@ export interface MicrosoftADProps {
    * @default false
    */
   readonly enableDirectoryDataAccess?: boolean;
+
+  /**
+   * Register AD with WorkSpaces
+   * @default false
+   */
+  readonly registerWithWorkSpaces?: boolean;
 }
 
 /**
@@ -152,6 +158,10 @@ export class MicrosoftAD extends Construct {
         }),
         role: enableDataAccessRole,
       });
+    }
+    // TODO: Add Register with WorkSpaces custom resource workflow
+    if ( props.registerWithWorkSpaces ) {
+      console.log('This is not yet supported')
     }
   }
 }
