@@ -92,7 +92,7 @@ export class MicrosoftAD extends Construct {
     // If password secret is provided, use it, otherwise create a new one
     const adSecret = props.password ?? new Secret(this, 'AdSecret', {
       generateSecretString: {
-        passwordLength: 32,
+        passwordLength: 16,
         excludePunctuation: true,
       },
     });

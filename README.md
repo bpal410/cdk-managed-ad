@@ -19,13 +19,13 @@ const vpc = new ec2.Vpc(stack, 'VPC', {
   maxAzs: 2,
 });
 
-// Existing Secret ARN of string type (not JSON)
+// Existing Secret ARN of password as string (not JSON). Username will be NETBIOS\admin
 const EXISTING_SECRET_ARN = string "arn:aws:secretsmanager:YOUR_REGION:YOUR_ACCOUNT_ID:secret:YOUR_EXISTING_SECRET_ARN"
 
 // Create the Microsoft AD
 const ad = new MicrosoftAD(stack, 'CorporateAD', {
   domainName: 'corp.example.com',
-  password: sm.Secret.fromSecretCompleteArn(self, "ExistingSecret", EXISTING_SECRET_ARN)
+  password: sm.Secret.fromSecretCompleteArn(self, "ExistingSecret", EXISTING_SECRET_ARN),
   vpc: vpc,
   edition: 'Standard', // or 'Enterprise'
   shortName: 'CORP', // optional. This would be your NetBIOS name.
