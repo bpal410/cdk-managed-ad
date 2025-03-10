@@ -178,6 +178,7 @@ const microsoftADProps: MicrosoftADProps = { ... }
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.edition">edition</a></code> | <code>string</code> | Edition of Microsoft AD (Standard or Enterprise). |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.enableDirectoryDataAccess">enableDirectoryDataAccess</a></code> | <code>boolean</code> | Enable Directory Data Service Access. |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.password">password</a></code> | <code>aws-cdk-lib.aws_secretsmanager.Secret</code> | The password for the directory administrator. |
+| <code><a href="#cdk-managed-ad.MicrosoftADProps.property.registerWithWorkSpaces">registerWithWorkSpaces</a></code> | <code>boolean</code> | Register AD with WorkSpaces. |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.shortName">shortName</a></code> | <code>string</code> | Short name for the directory (e.g. CORP). |
 | <code><a href="#cdk-managed-ad.MicrosoftADProps.property.vpcSubnets">vpcSubnets</a></code> | <code>aws-cdk-lib.aws_ec2.SubnetSelection</code> | *No description.* |
 
@@ -245,6 +246,19 @@ public readonly password: Secret;
 The password for the directory administrator.
 
 If not provided, a secure random password will be generated.
+
+---
+
+##### `registerWithWorkSpaces`<sup>Optional</sup> <a name="registerWithWorkSpaces" id="cdk-managed-ad.MicrosoftADProps.property.registerWithWorkSpaces"></a>
+
+```typescript
+public readonly registerWithWorkSpaces: boolean;
+```
+
+- *Type:* boolean
+- *Default:* false
+
+Register AD with WorkSpaces.
 
 ---
 

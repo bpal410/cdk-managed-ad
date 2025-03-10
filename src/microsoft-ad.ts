@@ -161,7 +161,7 @@ export class MicrosoftAD extends Construct {
     }
     // TODO: Add Register with WorkSpaces custom resource workflow
     if ( props.registerWithWorkSpaces ) {
-      console.log('This is not yet supported')
+      console.log('This is not yet supported');
     }
   }
 }
