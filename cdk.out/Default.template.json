@@ -600,7 +600,7 @@
    "Properties": {
     "GenerateSecretString": {
      "ExcludePunctuation": true,
-     "PasswordLength": 32
+     "PasswordLength": 16
     }
    },
    "UpdateReplacePolicy": "Delete",
@@ -802,6 +802,225 @@
     "aws:cdk:path": "Default/MicrosoftADStack/EnableDirectoryDataAccess/CustomResourcePolicy/Resource"
    }
   },
+  "MicrosoftADStackWorkspacesDefaultRoleEE04ED66": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "workspaces.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces-access-control.html#create-default-role",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonWorkSpacesServiceAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonWorkSpacesSelfServiceAccess"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonWorkSpacesPoolServiceAccess"
+       ]
+      ]
+     }
+    ],
+    "RoleName": "workspaces_DefaultRole"
+   },
+   "Metadata": {
+    "aws:cdk:path": "Default/MicrosoftADStack/WorkspacesDefaultRole/Resource"
+   }
+  },
+  "MicrosoftADStackWorkspacesRegisterDirectoryC43C91DA": {
+   "Type": "Custom::AWS",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AWS679f53fac002430cb0da5b7982bd22872D164C4C",
+      "Arn"
+     ]
+    },
+    "Create": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"WorkSpaces\",\"action\":\"registerWorkspaceDirectory\",\"parameters\":{\"DirectoryId\":\"",
+       {
+        "Ref": "MicrosoftADStack915700F2"
+       },
+       "\",\"EnableSelfService\":false,\"EnableWorkDocs\":false,\"SubnetIds\":[\"",
+       {
+        "Ref": "VPCprivateSubnet1SubnetE522290D"
+       },
+       "\",\"",
+       {
+        "Ref": "VPCprivateSubnet2Subnet2F4D9530"
+       },
+       "\"],\"UserIdentityType\":\"AWS_DIRECTORY_SERVICE\",\"WorkspaceType\":\"PERSONAL\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "MicrosoftADStack915700F2"
+       },
+       "-register-directory\"}}"
+      ]
+     ]
+    },
+    "Delete": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"service\":\"WorkSpaces\",\"action\":\"deregisterWorkspaceDirectory\",\"parameters\":{\"DirectoryId\":\"",
+       {
+        "Ref": "MicrosoftADStack915700F2"
+       },
+       "\"},\"physicalResourceId\":{\"id\":\"",
+       {
+        "Ref": "MicrosoftADStack915700F2"
+       },
+       "-deregister-directory\"}}"
+      ]
+     ]
+    },
+    "InstallLatestAwsSdk": true
+   },
+   "DependsOn": [
+    "MicrosoftADStackWorkspacesRegisterDirectoryCustomResourcePolicy41F0D6AD"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/Resource/Default"
+   }
+  },
+  "MicrosoftADStackWorkspacesRegisterDirectoryCustomResourcePolicy41F0D6AD": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "application-autoscaling:DeleteScalingPolicy",
+        "application-autoscaling:DeleteScheduledAction",
+        "application-autoscaling:DeregisterScalableTarget",
+        "application-autoscaling:DescribeScalableTargets",
+        "application-autoscaling:DescribeScalingActivities",
+        "application-autoscaling:DescribeScalingPolicies",
+        "application-autoscaling:DescribeScheduledActions",
+        "application-autoscaling:PutScalingPolicy",
+        "application-autoscaling:PutScheduledAction",
+        "application-autoscaling:RegisterScalableTarget",
+        "cloudwatch:DeleteAlarms",
+        "cloudwatch:DescribeAlarms",
+        "cloudwatch:PutMetricAlarm",
+        "ds:*",
+        "ec2:AssociateRouteTable",
+        "ec2:AttachInternetGateway",
+        "ec2:AuthorizeSecurityGroupEgress",
+        "ec2:AuthorizeSecurityGroupIngress",
+        "ec2:CreateInternetGateway",
+        "ec2:CreateNetworkInterface",
+        "ec2:CreateRoute",
+        "ec2:CreateRouteTable",
+        "ec2:CreateSecurityGroup",
+        "ec2:CreateSubnet",
+        "ec2:CreateTags",
+        "ec2:CreateVpc",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DeleteSecurityGroup",
+        "ec2:DescribeAvailabilityZones",
+        "ec2:DescribeInternetGateways",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeRouteTables",
+        "ec2:DescribeSecurityGroups",
+        "ec2:DescribeSubnets",
+        "ec2:DescribeVpcs",
+        "ec2:RevokeSecurityGroupEgress",
+        "ec2:RevokeSecurityGroupIngress",
+        "iam:AttachRolePolicy",
+        "iam:CreatePolicy",
+        "iam:CreateRole",
+        "iam:GetRole",
+        "iam:ListRoles",
+        "iam:PutRolePolicy",
+        "kms:ListAliases",
+        "kms:ListKeys",
+        "secretsmanager:ListSecrets",
+        "sso-directory:SearchUsers",
+        "sso:CreateApplication",
+        "sso:DeleteApplication",
+        "sso:DescribeApplication",
+        "sso:DescribeInstance",
+        "sso:GetApplicationGrant",
+        "sso:ListInstances",
+        "sso:PutApplicationAssignment",
+        "sso:PutApplicationAssignmentConfiguration",
+        "sso:PutApplicationAuthenticationMethod",
+        "sso:PutApplicationGrant",
+        "tag:GetResources",
+        "workdocs:AddUserToGroup",
+        "workdocs:DeregisterDirectory",
+        "workdocs:RegisterDirectory",
+        "workspaces:*"
+       ],
+       "Effect": "Allow",
+       "Resource": "*",
+       "Sid": "AllowWorkspacesCustomResource"
+      },
+      {
+       "Action": "iam:PassRole",
+       "Condition": {
+        "StringEquals": {
+         "iam:PassedToService": "workspaces.amazonaws.com"
+        }
+       },
+       "Effect": "Allow",
+       "Resource": "*",
+       "Sid": "AllowPassRole"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MicrosoftADStackWorkspacesRegisterDirectoryCustomResourcePolicy41F0D6AD",
+    "Roles": [
+     {
+      "Ref": "MicrosoftADStackEnableDataAccessRoleF5BD4651"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/CustomResourcePolicy/Resource"
+   }
+  },
   "AWS679f53fac002430cb0da5b7982bd22872D164C4C": {
    "Type": "AWS::Lambda::Function",
    "Properties": {
@@ -844,7 +1063,7 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VPy26DQAz8ltw324Yceib0oRxSIahyjcxiqBPYjdaGKEL8ewVEULWneWg0Hgd687LVwQpuvDb5ZV1RprtUwFwU3PjUoQl0d7waFRX2GEcqbrKKTNpkFmXwFpa4RvALsgoXf/FCZmcIhJydwwN528cDfIJ8gOAN7ir21ILgUry3gt7iHJiWPFQoAua7Riu9YjQehWuwUKLXXTrqcc3IepWTRyPO3xl9SwZ1VNgDGe/YFRK+KoJad4mbXhgxdhWZ8ebEelVBneWgu5RsWaE4+95YM/41k6iYzV7x9gTMKKzDARRv9a4xF5QdMPYqQXaNN6iihsXViyzsb36A65Vs+ScVe9dSjn6oUmN9KlAOOTPmTv4RZB3e+P+FyNmcppnW5ajP/NQGgd4E+nl1ZqK1b6xQjTqZ8Ae3UREOLgIAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VPTWuDQBD9Lblvtq0p9GzsBzmkiJZcw7iOdhLdDTujEsT/XtQQS3t6HzzevAn008tGByvoeG3y87qiTPepgDkr6PjYowl0f7gYFRX2EEcqbrKKTNpkFmX0Fpa4RvALsgoXf/FCZmcIhJy9h0fytotH+AT5AMEOrir21ILgUryzgt7iPTAvualQBMx3jVYGxWg8CtdgoUSv+3TS05qJDSonj0acvzL6lgzqqLB7Mt6xKyR8VQS17hM3vzBh7Coy082ZDaqCOstB9ynZskJx9r2xZvrrTqLibg6KN0dgRmEdjqB4o7eNOaNsgXFQCbJrvEEVNSyuXmRhf/M9XC5kyz+p2LuWcvRjlZrqU4FyzJkpd/S3IOuw4/8XImdzmmdal6M+8UMbBPrpWT+uTky09o0VqlEnM/4A5wMsvi4CAAA="
    },
    "Metadata": {
     "aws:cdk:path": "Default/CDKMetadata/Default"
