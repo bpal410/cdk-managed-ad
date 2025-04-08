@@ -726,7 +726,7 @@
                       "aws:cdk:cloudformation:type": "AWS::SecretsManager::Secret",
                       "aws:cdk:cloudformation:props": {
                         "generateSecretString": {
-                          "passwordLength": 32,
+                          "passwordLength": 16,
                           "excludePunctuation": true
                         }
                       }
@@ -976,11 +976,244 @@
                   "fqn": "aws-cdk-lib.custom_resources.AwsCustomResource",
                   "version": "2.173.2"
                 }
+              },
+              "WorkspacesDefaultRole": {
+                "id": "WorkspacesDefaultRole",
+                "path": "Default/MicrosoftADStack/WorkspacesDefaultRole",
+                "children": {
+                  "ImportWorkspacesDefaultRole": {
+                    "id": "ImportWorkspacesDefaultRole",
+                    "path": "Default/MicrosoftADStack/WorkspacesDefaultRole/ImportWorkspacesDefaultRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Default/MicrosoftADStack/WorkspacesDefaultRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "workspaces.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "description": "https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces-access-control.html#create-default-role",
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/AmazonWorkSpacesServiceAccess"
+                              ]
+                            ]
+                          },
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/AmazonWorkSpacesSelfServiceAccess"
+                              ]
+                            ]
+                          },
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/AmazonWorkSpacesPoolServiceAccess"
+                              ]
+                            ]
+                          }
+                        ],
+                        "roleName": "workspaces_DefaultRole"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.173.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.173.2"
+                }
+              },
+              "WorkspacesRegisterDirectory": {
+                "id": "WorkspacesRegisterDirectory",
+                "path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory",
+                "children": {
+                  "Provider": {
+                    "id": "Provider",
+                    "path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/Provider",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.SingletonFunction",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/Resource",
+                    "children": {
+                      "Default": {
+                        "id": "Default",
+                        "path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/Resource/Default",
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.CfnResource",
+                          "version": "2.173.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CustomResource",
+                      "version": "2.173.2"
+                    }
+                  },
+                  "CustomResourcePolicy": {
+                    "id": "CustomResourcePolicy",
+                    "path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/CustomResourcePolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "Default/MicrosoftADStack/WorkspacesRegisterDirectory/CustomResourcePolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "application-autoscaling:DeleteScalingPolicy",
+                                    "application-autoscaling:DeleteScheduledAction",
+                                    "application-autoscaling:DeregisterScalableTarget",
+                                    "application-autoscaling:DescribeScalableTargets",
+                                    "application-autoscaling:DescribeScalingActivities",
+                                    "application-autoscaling:DescribeScalingPolicies",
+                                    "application-autoscaling:DescribeScheduledActions",
+                                    "application-autoscaling:PutScalingPolicy",
+                                    "application-autoscaling:PutScheduledAction",
+                                    "application-autoscaling:RegisterScalableTarget",
+                                    "cloudwatch:DeleteAlarms",
+                                    "cloudwatch:DescribeAlarms",
+                                    "cloudwatch:PutMetricAlarm",
+                                    "ds:*",
+                                    "ec2:AssociateRouteTable",
+                                    "ec2:AttachInternetGateway",
+                                    "ec2:AuthorizeSecurityGroupEgress",
+                                    "ec2:AuthorizeSecurityGroupIngress",
+                                    "ec2:CreateInternetGateway",
+                                    "ec2:CreateNetworkInterface",
+                                    "ec2:CreateRoute",
+                                    "ec2:CreateRouteTable",
+                                    "ec2:CreateSecurityGroup",
+                                    "ec2:CreateSubnet",
+                                    "ec2:CreateTags",
+                                    "ec2:CreateVpc",
+                                    "ec2:DeleteNetworkInterface",
+                                    "ec2:DeleteSecurityGroup",
+                                    "ec2:DescribeAvailabilityZones",
+                                    "ec2:DescribeInternetGateways",
+                                    "ec2:DescribeNetworkInterfaces",
+                                    "ec2:DescribeRouteTables",
+                                    "ec2:DescribeSecurityGroups",
+                                    "ec2:DescribeSubnets",
+                                    "ec2:DescribeVpcs",
+                                    "ec2:RevokeSecurityGroupEgress",
+                                    "ec2:RevokeSecurityGroupIngress",
+                                    "iam:AttachRolePolicy",
+                                    "iam:CreatePolicy",
+                                    "iam:CreateRole",
+                                    "iam:GetRole",
+                                    "iam:ListRoles",
+                                    "iam:PutRolePolicy",
+                                    "kms:ListAliases",
+                                    "kms:ListKeys",
+                                    "secretsmanager:ListSecrets",
+                                    "sso-directory:SearchUsers",
+                                    "sso:CreateApplication",
+                                    "sso:DeleteApplication",
+                                    "sso:DescribeApplication",
+                                    "sso:DescribeInstance",
+                                    "sso:GetApplicationGrant",
+                                    "sso:ListInstances",
+                                    "sso:PutApplicationAssignment",
+                                    "sso:PutApplicationAssignmentConfiguration",
+                                    "sso:PutApplicationAuthenticationMethod",
+                                    "sso:PutApplicationGrant",
+                                    "tag:GetResources",
+                                    "workdocs:AddUserToGroup",
+                                    "workdocs:DeregisterDirectory",
+                                    "workdocs:RegisterDirectory",
+                                    "workspaces:*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*",
+                                  "Sid": "AllowWorkspacesCustomResource"
+                                },
+                                {
+                                  "Action": "iam:PassRole",
+                                  "Condition": {
+                                    "StringEquals": {
+                                      "iam:PassedToService": "workspaces.amazonaws.com"
+                                    }
+                                  },
+                                  "Effect": "Allow",
+                                  "Resource": "*",
+                                  "Sid": "AllowPassRole"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "MicrosoftADStackWorkspacesRegisterDirectoryCustomResourcePolicy41F0D6AD",
+                            "roles": [
+                              {
+                                "Ref": "MicrosoftADStackEnableDataAccessRoleF5BD4651"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.173.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.173.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.custom_resources.AwsCustomResource",
+                  "version": "2.173.2"
+                }
               }
             },
             "constructInfo": {
-              "fqn": "constructs.Construct",
-              "version": "10.0.5"
+              "fqn": "cdk-managed-ad.MicrosoftAD",
+              "version": "0.0.0"
             }
           },
           "AWS679f53fac002430cb0da5b7982bd2287": {

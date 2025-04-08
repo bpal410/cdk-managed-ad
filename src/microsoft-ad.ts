@@ -103,6 +103,7 @@ export class MicrosoftAD extends Construct {
       },
     });
 
+    // Create the Microsoft AD directory
     this.directory = new CfnMicrosoftAD(this, 'Resource', {
       name: props.domainName,
       password: adSecret.secretValue.unsafeUnwrap(),
@@ -114,13 +115,12 @@ export class MicrosoftAD extends Construct {
       shortName: props.shortName,
     });
 
-
     this.directoryId = this.directory.ref;
     this.dnsIps = this.directory.attrDnsIpAddresses;
     this.secretArn = adSecret.secretArn;
 
-    if ( props.enableDirectoryDataAccess ) {
-    // Create IAM role for the Custom Resource
+    if (props.enableDirectoryDataAccess) {
+      // Create IAM role for the Custom Resource
       const enableDataAccessRole = new iam.Role(this, 'EnableDataAccessRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         managedPolicies: [
@@ -159,9 +159,131 @@ export class MicrosoftAD extends Construct {
         role: enableDataAccessRole,
       });
     }
-    // TODO: Add Register with WorkSpaces custom resource workflow
-    if ( props.registerWithWorkSpaces ) {
-      console.log('This is not yet supported');
+    // Register with WorkSpaces custom resource
+    if (props.registerWithWorkSpaces) {
+      // Create workspaces_DefaultRole
+      const workspacesDefaultRole = new iam.Role(this, 'WorkspacesDefaultRole', {
+        roleName: 'workspaces_DefaultRole', // MUST BE workspaces_DefaultRole
+        description: 'https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces-access-control.html#create-default-role',
+        assumedBy: new iam.ServicePrincipal('workspaces.amazonaws.com'),
+        managedPolicies: [
+          iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonWorkSpacesServiceAccess'),
+          iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonWorkSpacesSelfServiceAccess'),
+          iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonWorkSpacesPoolServiceAccess'),
+        ],
+      });
+      // Create IAM policies for Custom Resource
+      const customResourceStatement = new iam.PolicyStatement({
+        sid: 'AllowWorkspacesCustomResource',
+        actions: [
+          'ds:*',
+          'workspaces:*',
+          'application-autoscaling:DeleteScalingPolicy',
+          'application-autoscaling:DeleteScheduledAction',
+          'application-autoscaling:DeregisterScalableTarget',
+          'application-autoscaling:DescribeScalableTargets',
+          'application-autoscaling:DescribeScalingActivities',
+          'application-autoscaling:DescribeScalingPolicies',
+          'application-autoscaling:DescribeScheduledActions',
+          'application-autoscaling:PutScalingPolicy',
+          'application-autoscaling:PutScheduledAction',
+          'application-autoscaling:RegisterScalableTarget',
+          'cloudwatch:DeleteAlarms',
+          'cloudwatch:DescribeAlarms',
+          'cloudwatch:PutMetricAlarm',
+          'ec2:AssociateRouteTable',
+          'ec2:AttachInternetGateway',
+          'ec2:AuthorizeSecurityGroupEgress',
+          'ec2:AuthorizeSecurityGroupIngress',
+          'ec2:CreateInternetGateway',
+          'ec2:CreateNetworkInterface',
+          'ec2:CreateRoute',
+          'ec2:CreateRouteTable',
+          'ec2:CreateSecurityGroup',
+          'ec2:CreateSubnet',
+          'ec2:CreateTags',
+          'ec2:CreateVpc',
+          'ec2:DeleteNetworkInterface',
+          'ec2:DeleteSecurityGroup',
+          'ec2:DescribeAvailabilityZones',
+          'ec2:DescribeInternetGateways',
+          'ec2:DescribeNetworkInterfaces',
+          'ec2:DescribeRouteTables',
+          'ec2:DescribeSecurityGroups',
+          'ec2:DescribeSubnets',
+          'ec2:DescribeVpcs',
+          'ec2:RevokeSecurityGroupEgress',
+          'ec2:RevokeSecurityGroupIngress',
+          'iam:AttachRolePolicy',
+          'iam:CreatePolicy',
+          'iam:CreateRole',
+          'iam:GetRole',
+          'iam:ListRoles',
+          'iam:PutRolePolicy',
+          'kms:ListAliases',
+          'kms:ListKeys',
+          'secretsmanager:ListSecrets',
+          'tag:GetResources',
+          'workdocs:AddUserToGroup',
+          'workdocs:DeregisterDirectory',
+          'workdocs:RegisterDirectory',
+          'sso-directory:SearchUsers',
+          'sso:CreateApplication',
+          'sso:DeleteApplication',
+          'sso:DescribeApplication',
+          'sso:DescribeInstance',
+          'sso:GetApplicationGrant',
+          'sso:ListInstances',
+          'sso:PutApplicationAssignment',
+          'sso:PutApplicationAssignmentConfiguration',
+          'sso:PutApplicationAuthenticationMethod',
+          'sso:PutApplicationGrant',
+        ],
+        resources: ['*'],
+      });
+      const passRoleStatement = new iam.PolicyStatement({
+        sid: 'AllowPassRole',
+        actions: ['iam:PassRole'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: {
+            'iam:PassedToService': 'workspaces.amazonaws.com',
+          },
+        },
+      });
+      new cr.AwsCustomResource(this, 'WorkspacesRegisterDirectory', {
+        installLatestAwsSdk: true,
+        onCreate: {
+          service: 'WorkSpaces',
+          action: 'registerWorkspaceDirectory',
+          parameters: {
+            DirectoryId: this.directoryId,
+            EnableSelfService: false,
+            EnableWorkDocs: false,
+            SubnetIds: subnets.slice(0, 2).map(subnet => subnet.subnetId),
+            UserIdentityType: 'AWS_DIRECTORY_SERVICE',
+            WorkspaceType: 'PERSONAL',
+          },
+          physicalResourceId: cr.PhysicalResourceId.of(`${this.directory.ref}-register-directory`),
+        },
+        onDelete: {
+          service: 'WorkSpaces',
+          action: 'deregisterWorkspaceDirectory',
+          parameters: {
+            DirectoryId: this.directoryId,
+          },
+          physicalResourceId: cr.PhysicalResourceId.of(`${this.directory.ref}-deregister-directory`),
+        },
+        policy: cr.AwsCustomResourcePolicy.fromStatements([
+          customResourceStatement,
+          passRoleStatement,
+        ]),
+        role: workspacesDefaultRole,
+      },
+      );
+    // TODO: Add Custom Resource for custom security group usage
+    // Look at `new-cdk-account` for example
+    // @assignees: bpal410
     }
   }
 }
